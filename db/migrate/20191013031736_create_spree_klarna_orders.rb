@@ -2,7 +2,7 @@ class CreateSpreeKlarnaOrders < ActiveRecord::Migration[5.1]
   def change
     create_table :spree_klarna_orders do |t|
       t.belongs_to :spree_order, index: { unique: true }, foreign_key: true
-      t.numeric :spree_order_id
+      t.integer :spree_order_id
       t.string :klarna_order_id
       t.string :klarna_order_state
       t.text :klarna_session_id
