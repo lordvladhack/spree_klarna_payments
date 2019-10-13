@@ -9,6 +9,6 @@ class CreateSpreeKlarnaOrders < ActiveRecord::Migration
       t.text :klarna_client_token
       t.datetime :klarna_session_expires_at
     end
-    add_index :spree_klarna_orders, :klarna_order_id
+    add_index :spree_klarna_orders, :order_id
   end
 end
