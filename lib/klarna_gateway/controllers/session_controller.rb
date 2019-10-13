@@ -10,22 +10,22 @@ module KlarnaGateway
         end
       else
         klarna_payment_method.provider.update_session(
-          current_order.klarna_session_id,
+          current_order.klarna_order.klarna_session_id,
           klarna_order(skip_personal_data: true).to_hash
         ).tap do |response|
           current_order.update_klarna_session_time() if response.success?
         end
       end
 
-      if current_order.klarna_client_token.blank?
+      if current_order.klarna_order.klarna_client_token.blank?
         raise "Could not create or update Klarna session for order '#{current_order.number}'."
       end
 
-      render json: {token: current_order.reload.klarna_client_token}
+      render json: {token: current_order.reload.klarna_order.klarna_client_token}
     end
 
     def show
-      render json: {status: !current_order.klarna_session_expired?, token: current_order.klarna_client_token, data: klarna_order.to_hash}
+      render json: {status: !current_order.klarna_session_expired?, token: current_order.klarna_order.klarna_client_token, data: klarna_order.to_hash}
     end
 
     def order_addresses

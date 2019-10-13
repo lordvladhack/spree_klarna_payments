@@ -281,12 +281,12 @@ module ActiveMerchant
 
       def update_order(response, order)
         if response.success?
-          order.update_attributes(
+          order.klarna_order.update_attributes(
             klarna_order_id: response.order_id,
             klarna_order_state: response.fraud_status
           )
         else
-          order.update_attributes(
+          order.klarna_order.update_attributes(
             klarna_order_id: nil,
             klarna_order_state: response.error_code
           )

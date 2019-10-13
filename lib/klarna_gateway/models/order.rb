@@ -3,7 +3,11 @@ module KlarnaGateway
     KLARNA_SESSION_LIFETIME = 48.hours
 
     def update_klarna_session(session_id: nil, client_token: nil)
-      self.update_attributes(
+      self.klarna_order = Spree::KlarnaOrder.create!(
+        spree_order_id: self.id
+      ) if self.klarna_order.nil?
+
+      self.klarna_order.update_attributes(
         klarna_session_id: session_id,
         klarna_client_token: client_token,
         klarna_session_expires_at: DateTime.now + KLARNA_SESSION_LIFETIME
@@ -11,13 +15,13 @@ module KlarnaGateway
     end
 
     def update_klarna_session_time
-      self.update_attributes(
+      self.klarna_order.update_attributes(
         klarna_session_expires_at: DateTime.now + KLARNA_SESSION_LIFETIME
       )
     end
 
     def klarna_session_expired?
-      !(self.klarna_session_expires_at.present? && self.klarna_session_expires_at >= DateTime.now)
+      !(self.klarna_order && self.klarna_order.klarna_session_expires_at.present? && self.klarna_order.klarna_session_expires_at >= DateTime.now)
     end
 
     def to_klarna(country = :us)
