@@ -1,4 +1,4 @@
-class CreateSpreeKlarnaOrders < ActiveRecord::Migration[5.1]
+class CreateSpreeKlarnaOrders < ActiveRecord::Migration
   def change
     create_table :spree_klarna_orders do |t|
       t.belongs_to :spree_order, index: { unique: true }, foreign_key: true
@@ -10,6 +10,5 @@ class CreateSpreeKlarnaOrders < ActiveRecord::Migration[5.1]
       t.datetime :klarna_session_expires_at
     end
     add_index :spree_klarna_orders, :klarna_order_id
-    add_index :spree_klarna_orders, :spree_order_id
   end
 end
